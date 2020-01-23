@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/davide/projects/lab/python-multi-packages/.penv/bin/python3.6",
+    "python.pythonPath": ".penv/bin/python",
     "files.exclude": {
         "**/*.pyc": true
     }

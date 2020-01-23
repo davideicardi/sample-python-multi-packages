@@ -22,6 +22,7 @@ function buildLayer() {
   (cd ./.tmp && zip -X -o -D -r - .) > ./target/lambda-layer-$layerName.zip
 
   # Calculate hash
+  # (or we can use the current git commit ...)
   md5FileHash=($(md5sum ./target/lambda-layer-$layerName.zip))
   mv ./target/lambda-layer-$layerName.zip ./target/lambda-layer-$layerName-$md5FileHash.zip
 

@@ -10,3 +10,4 @@ function installRequirements() {
 }
 
 installRequirements 'numpy_greetings'
+
