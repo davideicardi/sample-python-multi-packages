@@ -5,6 +5,10 @@ if [ "$VIRTUAL_ENV" = "" ]; then
 		exit 1
 fi
 
+function installEnvRequirements() {
+  pip install pylint
+}
+
 function installRequirements() {
   packageName=$1
 
@@ -13,5 +17,6 @@ function installRequirements() {
   pip install -r ./$packageName/requirements.txt
 }
 
+installEnvRequirements
 installRequirements 'numpy_greetings'
 
