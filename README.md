@@ -34,7 +34,7 @@ Run tests:
 
 Run integration tests:
 
-    ./run-it.sh
+    ./run-test-it.sh
 
 Run linter:
 
