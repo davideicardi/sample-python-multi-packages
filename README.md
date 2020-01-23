@@ -3,12 +3,11 @@ Sample python project to show how to organize a python project with multi packag
 
 ## Features
 
-- multiple packages (greetings and numpy_greetings)
-- dependencies between packages (numpy_greetings depends on greetings)
-- external dependencies (numpy_greetings depend on numpy)
+- multiple packages (`greetings` and `numpy_greetings` are two package examples)
+- dependencies between packages (`numpy_greetings` depends on `greetings`)
+- external dependencies, requirements (`numpy_greetings` depend on `numpy` as external dep)
 - unit tests
 - add integration tests
-- install requirements
 - create packages (useful to deploy lambdas...)
 - install dev requirements (like pylint)
 - pylint
@@ -36,6 +35,10 @@ Run tests:
 Run integration tests:
 
     ./run-it.sh
+
+Run linter:
+
+    ./run-lint.sh
 
 Build a zip for each package:
 
