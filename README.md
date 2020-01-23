@@ -7,13 +7,34 @@ Sample python project to show how to organize a python project with multi packag
 - dependencies between packages (numpy_greetings depends on greetings)
 - external dependencies (numpy_greetings depend on numpy)
 - unit tests
-- TODO add integration tests
+- add integration tests
+- install requirements
+- create packages (useful to deploy lambdas...)
 - TODO pylint
-- TODO automate install requirements for every package
-- TODO automate packages (create one zip for each package)
+- TODO force to be in venv
 
-## Init
+## Usage
 
 Create virtual environment:
 
     virtualenv .penv --python=python3
+
+Active virtual environment:
+
+    source .penv/bin/activate
+
+Install requirements:
+
+    ./run-install.sh
+
+Run tests:
+
+    ./run-test.sh
+
+Run integration tests:
+
+    ./run-it.sh
+
+Build a zip for each package:
+
+    ./run-build.sh
