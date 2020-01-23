@@ -8,6 +8,7 @@ Sample python project to show how to organize a python project with multi packag
 - external dependencies (numpy_greetings depend on numpy)
 - unit tests
 - TODO add integration tests
+- TODO pylint
 - TODO automate install requirements for every package
 - TODO automate packages (create one zip for each package)
 
