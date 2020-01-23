@@ -1,5 +1,5 @@
 
-Sample python project to show how to organize a python project with multi packages
+Sample python project to show how to organize a python project with multi packages.
 
 ## Features
 
@@ -8,11 +8,10 @@ Sample python project to show how to organize a python project with multi packag
 - external dependencies, requirements (`numpy_greetings` depend on `numpy` as external dep)
 - unit tests
 - add integration tests
-- create packages (useful to deploy lambdas...)
+- create build zip packages (useful to deploy AWS lambdas and layers...)
 - install dev requirements (like pylint)
-- pylint
-- force to be in virtual environment
-- TODO include in packages also dependencies
+- pylint src directory
+- check that scripts are executed inside a virtual environment
 
 ## Usage
 
@@ -43,3 +42,7 @@ Run linter:
 Build a zip for each package:
 
     ./run-build.sh
+
+Clean outputs:
+
+    ./run-clean.sh

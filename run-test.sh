@@ -3,4 +3,5 @@ if [ "$VIRTUAL_ENV" = "" ]; then
 		exit 1
 fi
 
+cd src
 python -m unittest discover -s test -t .

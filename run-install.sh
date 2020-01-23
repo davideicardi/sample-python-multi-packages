@@ -5,18 +5,40 @@ if [ "$VIRTUAL_ENV" = "" ]; then
 		exit 1
 fi
 
-function installEnvRequirements() {
+CURRENT_DIR=$PWD
+
+function installDevRequirements() {
   pip install pylint
 }
 
 function installRequirements() {
   packageName=$1
 
-  echo "Install requirements for $packageName"
+  requirementsFile="./src/$packageName/requirements.txt"
+  target="./src/$packageName/target"
 
-  pip install -r ./$packageName/requirements.txt
+  # if file exists
+  if test -f "$CURRENT_DIR/$requirementsFile"; then
+    echo "Install requirements for $packageName"
+
+    pip install -r $requirementsFile
+  else
+    echo "No requirements for $packageName"
+  fi
 }
 
-installEnvRequirements
-installRequirements 'numpy_greetings'
+function installSrcRequirements() {
+  # For each src dir
+  for subDir in src/*/ ; do
+    # get only the name
+    subDirName="$(basename $subDir)"
 
+    # Exclude dir starting with . or _
+    if [[ $subDirName =~ ^[^_|\.].*$ ]]; then
+      installRequirements $subDirName
+    fi
+  done
+}
+
+installDevRequirements
+installSrcRequirements

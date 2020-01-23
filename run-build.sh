@@ -5,62 +5,98 @@ if [ "$VIRTUAL_ENV" = "" ]; then
 		exit 1
 fi
 
-function buildLayer() {
-  layerName=$1
+CURRENT_DIR=$PWD
 
-  echo "Creating package for layer $layerName"
+function installRequirementsInTarget() {
+  packageName=$1
+
+  requirementsFile="./src/$packageName/requirements.txt"
+  target="./src/$packageName/target"
+
+  # if file exists
+  if test -f "$CURRENT_DIR/$requirementsFile"; then
+    echo "Install requirements for $packageName"
+
+    pip install -r $requirementsFile --target $target --upgrade
+  else
+    echo "No requirements for $packageName"
+  fi
+}
+
+function installSrcRequirementsInTarget() {
+  # For each src dir
+  for subDir in src/*/ ; do
+    # get only the name
+    subDirName="$(basename $subDir)"
+
+    # Exclude dir starting with . or _
+    if [[ $subDirName =~ ^[^_|\.].*$ ]]; then
+      installRequirementsInTarget $subDirName
+    fi
+  done
+}
+
+function buildPackage() {
+  packageName=$1
+  zipSubFolder=$2
+  tmpDestination="./.tmp/$zipSubFolder/"
+  zipDestination="./target/$packageName.zip"
+
+  echo "Creating package for $packageName"
+
+  # Note: for layers we should use python/layers convention
 
   # Clean temp dir
   rm -rf .tmp
-  mkdir -p .tmp/python/layers
+  mkdir -p $tmpDestination
 
   # Copy the code
-  cp -p -r ./$layerName ./.tmp/python/layers
+  cp ./src/$packageName/*.py $tmpDestination
 
-  # Clean up
-  find ./.tmp -type d -name '__pycache__' -prune -exec rm -rf {} \;
-  find ./.tmp -type f -name '*_test.py' -exec rm -r {} \;
-  find ./.tmp -type f -name '*.pyc' -exec rm -r {} \;
+  # Copy dependencies
+  if test -d "$CURRENT_DIR/src/$packageName/target"; then
+    cp -r ./src/$packageName/target/* $tmpDestination
+  fi
 
-  # Copy to target dir
+  # Zip and copy to target dir
   mkdir -p target
-  (cd ./.tmp && zip -X -o -D -r - .) > ./target/lambda-layer-$layerName.zip
+  if test -f $CURRENT_DIR/$zipDestination; then
+    rm $zipDestination
+  fi
+  (cd ./.tmp && zip -X -o -D -r - .) > $zipDestination
 
-  # Calculate hash
-  # (or we can use the current git commit ...)
-  md5FileHash=($(md5sum ./target/lambda-layer-$layerName.zip))
-  mv ./target/lambda-layer-$layerName.zip ./target/lambda-layer-$layerName-$md5FileHash.zip
+  echo "Created package $zipDestination"
+}
 
-  echo "Created package ./target/lambda-layer-$layerName-$md5FileHash.zip"
+function buildLayer() {
+  layerName=$1
+
+  buildPackage $layerName "python/layers"
 }
 
 function buildLambda() {
   lambdaName=$1
 
-  echo "Creating package for lambda $lambdaName"
-
-  # Clean temp dir
-  rm -rf .tmp
-  mkdir -p .tmp
-
-  # Copy the code
-  cp -p -r ./lambda/$lambdaName ./.tmp/
-
-  # Clean up
-  find ./.tmp -type d -name '__pycache__' -prune -exec rm -rf {} \;
-  find ./.tmp -type f -name '*_test.py' -exec rm -r {} \;
-  find ./.tmp -type f -name '*.pyc' -exec rm -r {} \;
-
-  # Copy to target dir
-  mkdir -p target
-  (cd ./.tmp/$lambdaName && zip -X -o -D -r - .) > ./target/lambda-$lambdaName.zip
-
-  # Calculate hash
-  md5FileHash=($(md5sum ./target/lambda-$lambdaName.zip))
-  mv ./target/lambda-$lambdaName.zip ./target/lambda-$lambdaName-$md5FileHash.zip
-
-  echo "Created package ./target/lambda-$lambdaName-$md5FileHash.zip"
+  buildPackage $lambdaName ""
 }
 
-buildLayer 'greetings'
-buildLayer 'numpy_greetings'
+function buildSrc() {
+  # For each dir
+  for subDir in ./src/*/ ; do
+    # get only the name
+    subDirName="$(basename $subDir)"
+
+    # Exclude test and test-it
+    if [ $subDirName != "test" ] && [ $subDirName != "test-it" ]; then
+      # Exclude dir starting with . or _
+      if [[ $subDirName =~ ^[^_|\.].*$ ]]; then
+        # TODO Find a way to understand if building a layer or a lambda
+        # buildLayer $subDirName
+        buildLambda $subDirName
+      fi
+    fi
+  done
+}
+
+installSrcRequirementsInTarget
+buildSrc
