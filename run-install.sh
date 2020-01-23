@@ -1,5 +1,10 @@
 set -e
 
+if [ "$VIRTUAL_ENV" = "" ]; then
+    echo "Virtual environment not set"
+		exit 1
+fi
+
 function installRequirements() {
   packageName=$1
 
@@ -8,6 +13,5 @@ function installRequirements() {
   pip install -r ./$packageName/requirements.txt
 }
 
-pip install -r ./dev_requirements.txt
 installRequirements 'numpy_greetings'
 
