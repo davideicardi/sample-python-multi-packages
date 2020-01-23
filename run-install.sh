@@ -1,5 +1,9 @@
 set -e
 
+function installEnvRequirements() {
+  pip install pylint
+}
+
 function installRequirements() {
   packageName=$1
 
@@ -9,5 +13,6 @@ function installRequirements() {
 
 }
 
+installEnvRequirements
 installRequirements 'numpy_greetings'
 
