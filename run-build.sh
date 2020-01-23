@@ -1,5 +1,10 @@
 set -e
 
+if [ "$VIRTUAL_ENV" = "" ]; then
+    echo "Virtual environment not set"
+		exit 1
+fi
+
 function buildLayer() {
   layerName=$1
 

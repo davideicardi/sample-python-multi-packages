@@ -10,8 +10,10 @@ Sample python project to show how to organize a python project with multi packag
 - add integration tests
 - install requirements
 - create packages (useful to deploy lambdas...)
-- TODO pylint
-- TODO force to be in venv
+- install dev requirements (like pylint)
+- pylint
+- force to be in virtual environment
+- TODO include in packages also dependencies
 
 ## Usage
 
