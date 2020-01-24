@@ -8,7 +8,8 @@ fi
 CURRENT_DIR=$PWD
 
 function installDevRequirements() {
-  pip install pylint
+  pip install 'pylint==2.4.4'
+  pip install 'mock==3.0.5'
 }
 
 function installRequirements() {
