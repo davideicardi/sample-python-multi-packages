@@ -1,5 +1,5 @@
 
-Sample python project to show how to organize a python project with multi packages.
+Sample to show how to organize a python project with multi packages and deployments.
 
 ## Features
 
