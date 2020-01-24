@@ -41,6 +41,7 @@ function buildPackage() {
   # Copy the code
   cp ./src/$packageName/*.py $tmpDestination
   find ./src/$packageName -name \*.txt -exec cp {} ./$tmpDestination \;
+  find ./src/$packageName -name \*.json -exec cp {} ./$tmpDestination \;
 
   installRequirementsInTarget $packageName $zipSubFolder
 
