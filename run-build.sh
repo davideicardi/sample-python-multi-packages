@@ -91,8 +91,8 @@ function buildSrc() {
       # Exclude dir starting with . or _
       if [[ $subDirName =~ ^[^_|\.].*$ ]]; then
         # TODO Find a way to understand if building a layer or a lambda
-        # buildLayer $subDirName
-        buildLambda $subDirName
+        buildLayer $subDirName
+        # buildLambda $subDirName
       fi
     fi
   done
