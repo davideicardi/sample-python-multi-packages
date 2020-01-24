@@ -9,9 +9,10 @@ CURRENT_DIR=$PWD
 
 function installRequirementsInTarget() {
   packageName=$1
+  zipSubFolder=$2
 
-  requirementsFile="./src/$packageName/requirements.txt"
-  target="./src/$packageName/target"
+  requirementsFile="./.tmp/$zipSubFolder/requirements.txt"
+  target="./.tmp/$zipSubFolder/"
 
   # if file exists
   if test -f "$CURRENT_DIR/$requirementsFile"; then
@@ -21,19 +22,6 @@ function installRequirementsInTarget() {
   else
     echo "No requirements for $packageName"
   fi
-}
-
-function installSrcRequirementsInTarget() {
-  # For each src dir
-  for subDir in src/*/ ; do
-    # get only the name
-    subDirName="$(basename $subDir)"
-
-    # Exclude dir starting with . or _
-    if [[ $subDirName =~ ^[^_|\.].*$ ]]; then
-      installRequirementsInTarget $subDirName
-    fi
-  done
 }
 
 function buildPackage() {
@@ -52,11 +40,9 @@ function buildPackage() {
 
   # Copy the code
   cp ./src/$packageName/*.py $tmpDestination
+  find ./src/$packageName -name \*.txt -exec cp {} ./$tmpDestination \;
 
-  # Copy dependencies
-  if test -d "$CURRENT_DIR/src/$packageName/target"; then
-    cp -r ./src/$packageName/target/* $tmpDestination
-  fi
+  installRequirementsInTarget $packageName $zipSubFolder
 
   # Zip and copy to target dir
   mkdir -p target
@@ -98,5 +84,4 @@ function buildSrc() {
   done
 }
 
-installSrcRequirementsInTarget
 buildSrc
