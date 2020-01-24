@@ -9,6 +9,7 @@ Sample python project to show how to organize a python project with multi packag
 - unit tests
 - add integration tests
 - create build zip packages (useful to deploy AWS lambdas and layers...)
+- create PyPi packages
 - install dev requirements (like pylint)
 - pylint src directory
 - check that scripts are executed inside a virtual environment
@@ -39,9 +40,13 @@ Run linter:
 
     ./run-lint.sh
 
-Build a zip for each package:
+Build a zip for each package (for lambda packages):
 
     ./run-build.sh
+
+Build a PyPi distribution for each package containing `setup.py`:
+
+    ./run-dist.sh
 
 Clean outputs:
 
