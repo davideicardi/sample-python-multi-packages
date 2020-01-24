@@ -27,5 +27,5 @@ function lintSrc() {
   done
 }
 
-cd src
+cd src || exit
 lintSrc
