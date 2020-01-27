@@ -19,21 +19,28 @@ function createDist() {
 
     # Clean temp dir
     rm -rf .tmp
-    mkdir $tmpDestination
+    mkdir -p $tmpDestination
+    mkdir -p $tmpDestination$packageName
 
-    # Copy the code (python files, cfg, md)
-    cp ./src/$packageName/*.py $tmpDestination
+    # Copy the code (python files) in a sub directory
+    cp ./src/$packageName/*.py $tmpDestination/$packageName
+    # Copy "metadata" (cfg, md)
     find ./src/$packageName -name \*.cfg -exec cp {} ./$tmpDestination \;
     find ./src/$packageName -name \*.md -exec cp {} ./$tmpDestination \;
 
+    # move setup.py in the root
+    mv $tmpDestination/$packageName/setup.py $tmpDestination/
+
     # Run python distribution
-    python .tmp/setup.py sdist --dist-dir .tmp/dist bdist_wheel --dist-dir .tmp/dist
+    cd .tmp
+    python setup.py sdist --dist-dir dist bdist_wheel --dist-dir dist
+    cd ..
     rm -vrf ./*.egg-info
 
     # Copy distribution file to target
     mkdir -p target
-    cp ./.tmp/dist/*.whl target/
-    cp ./.tmp/dist/*.tar.gz target/
+    cp $tmpDestination/dist/*.whl target/
+    cp $tmpDestination/dist/*.tar.gz target/
   fi
 }
 
