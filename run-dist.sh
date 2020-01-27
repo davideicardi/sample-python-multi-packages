@@ -2,7 +2,7 @@ set -e
 
 if [ "$VIRTUAL_ENV" = "" ]; then
     echo "Virtual environment not set"
-		exit 1
+    exit 1
 fi
 
 CURRENT_DIR=$PWD
