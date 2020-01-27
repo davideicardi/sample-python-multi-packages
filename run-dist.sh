@@ -27,12 +27,13 @@ function createDist() {
     find ./src/$packageName -name \*.md -exec cp {} ./$tmpDestination \;
 
     # Run python distribution
-    python .tmp/setup.py bdist_wheel --dist-dir .tmp/dist
+    python .tmp/setup.py sdist --dist-dir .tmp/dist bdist_wheel --dist-dir .tmp/dist
     rm -vrf ./*.egg-info
 
     # Copy distribution file to target
     mkdir -p target
     cp ./.tmp/dist/*.whl target/
+    cp ./.tmp/dist/*.tar.gz target/
   fi
 }
 
