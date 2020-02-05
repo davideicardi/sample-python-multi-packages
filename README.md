@@ -31,10 +31,14 @@ Install requirements:
 Run tests:
 
     ./run-test.sh
+    # run a single test class
+    ./run-test.sh test_package.test_module[.TestSuite][.test_method]
 
 Run integration tests:
 
     ./run-test-it.sh
+    # run a single test class
+    ./run-test-it.sh test_package.test_module[.TestSuite][.test_method]
 
 Run linter:
 
